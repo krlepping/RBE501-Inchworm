@@ -5,8 +5,10 @@ sQuadruped Manipulator.py that Dan Moyer made for my legged robotics project.
 I am only documenting this because my memory is horrible and I will probably re-use this code in the future.
 """
 
-import math
+import math as math
 import numpy as np
+import matlab.engine
+
 
 class Manipulator:
     default_S = [0, 0, 1, 0, 0, 0]
@@ -16,7 +18,7 @@ class Manipulator:
         self.S = [] # Skew symmetric
         self.M = [] # Frame, 1D array 0 through
         self.Mtrans = [] # Transitioins from each joint (M12, M23, etc), 2D array following M's format
-
+        self.eng = matlab.engine.start_matlab() # Makes my life so much easier, no need to create new FK and IK scripts
 
     def addRevoluteJoint(self, w, p, BaseFrame = default_M):
         """
@@ -41,7 +43,28 @@ class Manipulator:
         """
         This should not be used, as the inchworm has no prismatic joints, but it is here because I want to reuse this
         class for future projects
+        This function will be empty until I feel like I should fill it
         :param s:
         :param w:
         :return:
         """
+
+    def twist2ht(self, S, theta):
+        """
+        Helper function for IK and FK
+        :param S:
+        :param theta:
+        :return:
+        """
+        R = self.axisangle2rot(S[1:3],theta)
+
+
+    def axisangle2rot(self, omega, theta):
+        """
+        Helper function for twist2ht
+        :param omega:
+        :param theta:
+        :return:
+        """
+        omega_ss = np.array([[0, -omega[2], omega[1]], [omega[2], 0, -omega[0]], [-omega[1], omega[0], 0]])
+        return np.identity(3) + math.sin(theta) * omega_ss + (1- math.cos(theta)) * np.multiply(omega_ss,omega_ss)
