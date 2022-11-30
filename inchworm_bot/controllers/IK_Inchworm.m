@@ -3,6 +3,9 @@ function [a,b,c,d,e] = IK_Inchworm(x,y,z,a,b,c,d,e,alpha,beta,gamma)
     % a b c d e are the current positions of the gripper
     % alpha beta gamma are the xyz euler coordinates of the target position
 
+    S = [];
+    M = [];
+
     currentQ = [a,b,c,d,e];
 
     R1=[1,0,0;0,cos(alpha),-sin(alpha);0,sin(alpha),cos(alpha)]; % Rx,a
@@ -11,13 +14,10 @@ function [a,b,c,d,e] = IK_Inchworm(x,y,z,a,b,c,d,e,alpha,beta,gamma)
     targetOrientation = R1*R2*R3; % Rxyz
 
     targetPose = [x;y;z];
-    T = fkine(S_body, M, currentQ, 'body');
+    T = fkine(S, M, currentQ, 'body');
     
     currentPose = T(1:3,4);
     currentOrientation = T(1:3,1:3);
-
-    S = [];
-    M = [];
 
 
     while norm(targetPose - currentPose) > 1e-3 ... 
