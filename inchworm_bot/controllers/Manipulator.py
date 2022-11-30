@@ -11,14 +11,9 @@ import matlab.engine
 
 
 class Manipulator:
-    # default_S = [0, 0, 1, 0, 0, 0]
-    # default_M = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1] # Setup as a 1D arraw so its easier to parse long term
-
     def __init__(self):
-        # self.S = [] # Skew symmetric
-        # self.M = [] # Frame, 1D array 0 through
-        # self.Mtrans = [] # Transitioins from each joint (M12, M23, etc), 2D array following M's format
         self.eng = matlab.engine.start_matlab() # Makes my life so much easier, no need to create new FK and IK scripts
+        # Hopefully I can just get it working
         self.eng.addpath(r'/home/midnightpegasus/Documents/WPI/RobotDynamics/Final_Project/RBE501-Inchworm/inchworm_bot/controllers',nargout=5)
 
     def InchwormFK(self, Joints):
@@ -56,6 +51,7 @@ class Manipulator:
         d = Joints[3].getPosition()
         e = Joints[4].getPosition()
         IK = self.eng.IK_Inchworm(x,y,z,a,b,c,d,e,alpha,beta,gamma)
+        # TODO: Make this work
         return IK # Might need to change this return type to be a list instead of what it might be - maybe a string, unsure
 
     def InchwormIK(self,x,y,z,Joints):
@@ -75,4 +71,5 @@ class Manipulator:
         d = Joints[3].getPosition()
         e = Joints[4].getPosition()
         IK = self.eng.IK_InchwormNoOrientation(x,y,z,a,b,c,d,e)
+        # TODO: Make this work, and parse the return IK for proper info
         return IK # Might need to change this return type to be a list instead of what it might be - maybe a string, unsure

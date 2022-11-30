@@ -5,11 +5,6 @@ from Servo import Servo
 
 class MotorController:
     def __init__(self):
-        # self.motor1 = [-math.pi, math.pi] # These probably aren't needed as the Webots servos should carry all this info
-        # self.motor2 = [-math.pi, math.pi]
-        # self.motor3 = [-math.pi, math.pi]
-        # self.motor4 = [-math.pi, math.pi]
-        # self.motor5 = [-math.pi, math.pi]
         self.manipulator = Manipulator
         self.WebotsController = WebotsServoController()
 
