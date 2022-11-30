@@ -55,3 +55,21 @@ class Manipulator:
         """
         IK = self.eng.IK_Inchworm(x,y,z,a,b,c,d,e,alpha,beta,gamma)
         return IK # Might need to change this return type to be a list instead of what it might be - maybe a string, unsure
+
+    def InchwormIK(self,x,y,z,a,b,c,d,e):
+        """
+        Go to point, final orientation doesn't matter
+        xyz coordinates we want to go
+        :param x:
+        :param y:
+        :param z:
+
+        Initial position of the arm (current Q)
+        :param a:
+        :param b:
+        :param c:
+        :param d:
+        :param e:
+        """
+        IK = self.eng.IK_InchwormNoOrientation(x,y,z,a,b,c,d,e)
+        return IK # Might need to change this return type to be a list instead of what it might be - maybe a string, unsure
