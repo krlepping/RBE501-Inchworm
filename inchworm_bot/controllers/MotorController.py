@@ -20,7 +20,7 @@ class MotorController:
         self.manipulator = Manipulator
 
     def moveToPoint(self, x, y, z):
-        self.manipulator.InchwormIK(x, y, z, self.a, self.b, self.c, self.d, self.e)
-
-
+        joint_angles = self.manipulator.InchwormIK(x, y, z, self.a, self.b, self.c, self.d, self.e)
+        # We can either stick this directly into webots, and it will go here based off the max speed the motors can go,
+        # OR we make actual trajeectory planning
 
