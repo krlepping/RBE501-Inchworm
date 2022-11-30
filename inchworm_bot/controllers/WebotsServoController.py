@@ -7,6 +7,12 @@ except:
         def getDevice(self, jointName):
             return None
 
+        def getBasicTimeStep(self):
+            return 0
+
+        def step(self, timeStep):
+            return False
+
 class WebotsServoController:
     def __init__(self):
         self.webot = Webot()
@@ -18,8 +24,7 @@ class WebotsServoController:
         self.startTime = time()
 
     def update(self):
-        self.simTime = self.simTime + self.simStep if self.simStep > 0 else round(
-            1000 * (time() - self.startTime))
+        self.simTime = self.simTime + self.simStep if self.simStep > 0 else round(1000 * (time() - self.startTime))
         return self.webot.step(self.simStep) == -1
 
     def addServo(self, jointName):
@@ -27,8 +32,3 @@ class WebotsServoController:
         if s is not None:
             s.setPosition(0)
         return s
-        def getBasicTimeStep(self):
-            return 0
-
-        def step(self, timeStep):
-            return False
