@@ -1,16 +1,27 @@
-import Manipulator
-import math as math
-from math import radians
-from WebotsServoController import WebotsServoController
-from Servo import Servo
-from controller import Robot, Motor
+"""MotorController controller."""
 
-#TIME_STEP = 64
+# You may need to import some classes of the controller module. Ex:
+#  from controller import Robot, Motor, DistanceSensor
+from controller import Robot, Motor
 
 # create the Robot instance.
 robot = Robot()
 
+# get the time step of the current world.
+timestep = int(robot.getBasicTimeStep())
 
+# You should insert a getDevice-like function in order to get the
+# instance of a device of the robot. Something like:
+#  motor = robot.getMotor('motorname')
+#  ds = robot.getDistanceSensor('dsname')
+#  ds.enable(timestep)
+from controller import Manipulator
+import math as math
+from math import radians
+from WebotsServoController import WebotsServoController
+from Servo import Servo
+
+#TIME_STEP = 64
 
 class MotorController:
     def __init__(self):
@@ -37,4 +48,17 @@ class MotorController:
         
         # We can either stick this directly into webots, and it will go here based off the max speed the motors can go,
         # OR we make actual trajeectory planning
+# Main loop:
+# - perform simulation steps until Webots is stopping the controller
+while robot.step(timestep) != -1:
+    # Read the sensors:
+    # Enter here functions to read sensor data, like:
+    #  val = ds.getValue()
+    moveToPoint(4,5,7)
+    # Process sensor data here.
 
+    # Enter here functions to send actuator commands, like:
+    #  motor.setPosition(10.0)
+    pass
+
+# Enter here exit cleanup code.
