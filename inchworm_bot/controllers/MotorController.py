@@ -1,38 +1,35 @@
-import Manipulator
-import math as math
-from math import radians
+from Manipulator import Manipulator
 from WebotsServoController import WebotsServoController
-from Servo import Servo
 from controller import Robot, Motor
-
-#TIME_STEP = 64
-
-# create the Robot instance.
-robot = Robot()
 
 
 
 class MotorController:
     def __init__(self):
+        print("Motor Controller Initializing")
         self.manipulator = Manipulator()
-        self.WebotsController = WebotsServoController()
+        print("Manipulator Initialized")
+        # Create Robot Instance
+        self.robot = WebotsServoController()
+        print("Webots Controller Initializing")
 
-        #joint_a = Servo(webots_servo=self.WebotsController.addServo("foot_ankle_joint2"))
-        #joint_b = Servo(webots_servo=self.WebotsController.addServo("ankle_leg_joint2"))
-        #joint_c = Servo(webots_servo=self.WebotsController.addServo("center_joint"))
-        #joint_d = Servo(webots_servo=self.WebotsController.addServo("leg_ankle_joint1"))
-        #joint_e = Servo(webots_servo=self.WebotsController.addServo("ankle_foot_joint1"))
         # get the motor devices
-        joint_a = robot.getDevice('foot_ankle_motor2')
-        joint_e = robot.getDevice('foot_ankle_motor1')
-        joint_c = robot.getDevice('center_motor')
-        joint_d = robot.getDevice('ankle_leg_motor1')
-        joint_b = robot.getDevice('ankle_leg_motor2')
-        
-        self.Joints = [joint_a, joint_b, joint_c, joint_d, joint_e]
+        self.joint_a = self.robot.addServo('foot_ankle_motor2')
+        self.joint_e = self.robot.addServo('foot_ankle_motor1')
+        self.joint_c = self.robot.addServo('center_motor')
+        self.joint_d = self.robot.addServo('ankle_leg_motor1')
+        self.joint_b = self.robot.addServo('ankle_leg_motor2')
+
 
     def whereAt(self):
-        position = self.manipulator.InchwormFK(self.Joints)
+        a = self.joint_a.getTargetPosition()
+        b = self.joint_b.getTargetPosition()
+        c = self.joint_c.getTargetPosition()
+        d = self.joint_d.getTargetPosition()
+        e = self.joint_e.getTargetPosition()
+        print(f"Joint 1 {a}, Joint 2 {b}, Joint 3 {c}, Joint 4 {d}, Joint 5 {e}")
+        q = [a, b, c, d, e]
+        position = self.manipulator.InchwormFK(q)
         print(f"{position}")
         return position
 
@@ -42,7 +39,5 @@ class MotorController:
         print(f"{joint_angles}")
         return joint_angles
         
-        
-        # We can either stick this directly into webots, and it will go here based off the max speed the motors can go,
-        # OR we make actual trajeectory planning
+
 

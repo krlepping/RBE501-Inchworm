@@ -7,13 +7,9 @@ just what I'll do instead
 
 import math as math
 import numpy as np
-# import matlab.engine
-from scipy.spatial.transform import Rotation as R
 
 class Manipulator:
     def __init__(self):
-        # self.eng = matlab.engine.start_matlab() # Makes my life so much easier, no need to create new FK and IK scripts
-        # self.eng.addpath(r'/home/midnightpegasus/Documents/WPI/RobotDynamics/Final_Project/RBE501-Inchworm/inchworm_bot/controllers')
         # Hopefully I can just get it working
         self.footHeight1 = 38.40
         self.AnkleHeight1 = 109.03
@@ -21,7 +17,7 @@ class Manipulator:
         self.legLength1 = 163.71
         self.defaultAngle = 58.64 * math.pi / 180
 
-        # self.eng.FK_Inchworm(nargout=1)
+
         self.M = np.array([[1,0,0,self.legLength1*math.cos(self.defaultAngle)*2],[0,-1,0,0],[0,0,-1,0],[0,0,0,1]])
         self.S = np.array([[0, 0, 1, 0, 0, 0],
                            [0, 1, 0, self.AnkleHeight1, 0, 0],
@@ -29,7 +25,6 @@ class Manipulator:
                             -self.legLength1 * math.sin(self.defaultAngle), 0],
                            [0, 1, 0, self.AnkleHeight2, -self.legLength1 * math.sin(self.defaultAngle) * 2, 0],
                            [0, 1, 0, 0, -self.legLength1 * math.sin(self.defaultAngle) * 2, 0]])
-        # print(self.eng.test())
 
     def InchwormFK(self, Joints):
         """
@@ -37,13 +32,7 @@ class Manipulator:
         :param Joints: The joints of the robot, in order
         :return:
         """
-        a = Joints[0].getPosition()
-        b = Joints[1].getPosition()
-        c = Joints[2].getPosition()
-        d = Joints[3].getPosition()
-        e = Joints[4].getPosition()
-        print(f"Joint 1 {a}, Joint 2 {b}, Joint 3 {c}, Joint 4 {d}, Joint 5 {e}")
-        # T = self.eng.FK_Inchworm(a,b,c,d,e)
+        RodriguesFormula(self.S,self.M,q)
 
     def InchwormFKNoWebots(self, Joints):
         """
@@ -110,6 +99,7 @@ def newton_raphson(targetT,initialJointAngles,epsilon,max_iter,S,M):
     currentQ = initialJointAngles
     currentT = RodriguesFormula(S,M,initialJointAngles)
     while np.linalg.norm(targetT - currentT) > epsilon:
+        return
 
 
 
@@ -128,7 +118,7 @@ def jacoba(S,M,q):
     p = T[0:3,3]
 
 def jacob0(S,q):
-
+    return 0
 
 
 def twist2ht(S,angle):
