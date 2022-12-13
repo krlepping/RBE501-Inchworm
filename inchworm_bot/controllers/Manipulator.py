@@ -26,7 +26,7 @@ class Manipulator:
                            [0, 1, 0, self.AnkleHeight2, -self.legLength1 * math.sin(self.defaultAngle) * 2, 0],
                            [0, 1, 0, 0, -self.legLength1 * math.sin(self.defaultAngle) * 2, 0]])
 
-    def InchwormFK(self, Joints):
+    def InchwormFK(self, q):
         """
         Takes in all 5 joint angles and returns the foot position, Joints is a [] of Servos currently
         :param Joints: The joints of the robot, in order

@@ -1,5 +1,7 @@
 from MotorController import MotorController
 from Manipulator import Manipulator
+from math import pi
+Time_Step = 2
 
 def main():
     print("Starting Inchworm Running")
@@ -8,5 +10,9 @@ def main():
     # Joints = [0,0,0,0,0]
     # man.InchwormFKNoWebots(Joints)
     # motorController.whereAt()
-    while True:
+    i = 0
+    while motorController.robot.step(Time_Step) != -1:
+        motorController.move(2*pi/100*i)
         motorController.whereAt()
+        i+=1
+        print(i)

@@ -1,6 +1,8 @@
 from Manipulator import Manipulator
 from WebotsServoController import WebotsServoController
 from controller import Robot, Motor
+from math import pi
+from time import sleep
 
 
 
@@ -32,6 +34,10 @@ class MotorController:
         position = self.manipulator.InchwormFK(q)
         print(f"{position}")
         return position
+
+    def move(self,angle):
+        self.joint_a.setPosition(angle)
+
 
 
     def moveToPoint(self, x, y, z):

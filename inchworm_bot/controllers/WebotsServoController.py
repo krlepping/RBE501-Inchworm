@@ -32,3 +32,6 @@ class WebotsServoController:
         if s is not None:
             s.setPosition(0)
         return s
+
+    def step(self,t):
+        self.webot.step(t)

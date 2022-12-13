@@ -1,6 +1,8 @@
 from MotorController import MotorController
 from Manipulator import Manipulator
 
+Time_Step = 64
+
 def main():
     print("Starting Inchworm Running")
     motorController = MotorController()
@@ -8,8 +10,7 @@ def main():
     # Joints = [0,0,0,0,0]
     # man.InchwormFKNoWebots(Joints)
     # motorController.whereAt()
-    while True:
-        motorController.whereAt()
+
 
 if __name__ == "__main__":
     main()
