@@ -3,8 +3,15 @@ function [a,b,c,d,e] = IK_Inchworm(x,y,z,a,b,c,d,e,alpha,beta,gamma)
     % a b c d e are the current positions of the gripper
     % alpha beta gamma are the xyz euler coordinates of the target position
 
-    S = [];
-    M = [];
+    S = [0 0 1 0 0 0;
+        0 1 0 109.03 0 0;
+        0 1 0 248.4913 -84.9940 0;
+        0 1 0 109.03 -169.9879 0;
+        0 0 1 0 -169.9879 0]';
+    M = [1 0 0 169.9879;
+        0 -1 0 0;
+        0 0 -1 0;
+        0 0 0 1];
 
     currentQ = [a,b,c,d,e];
 
