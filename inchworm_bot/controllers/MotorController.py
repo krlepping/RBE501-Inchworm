@@ -37,10 +37,10 @@ class MotorController:
 
     def move(self,angle):
         self.joint_a.setPosition(angle[0])
-        self.joint_b.setPosition(angle[0])
-        self.joint_c.setPosition(angle[0])
-        self.joint_d.setPosition(angle[0])
-        self.joint_e.setPosition(angle[0])
+        self.joint_b.setPosition(angle[1])
+        self.joint_c.setPosition(angle[2])
+        self.joint_d.setPosition(angle[3])
+        self.joint_e.setPosition(angle[4])
 
 
 
