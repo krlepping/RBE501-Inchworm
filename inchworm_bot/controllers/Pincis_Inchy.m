@@ -22,7 +22,7 @@ function Pincis_Inchy()
                   0 1 0 300; 
                   1 0 0 50.8; 
                   0 0 0 1];
-    targetBoxX = [0 -1 0 150; 
+    targetBoxX = [0 -1 0 300; 
                   0 0 -1 0; 
                   1 0 0 50.8; 
                   0 0 0 1];
@@ -34,6 +34,15 @@ function Pincis_Inchy()
     %% Trajectory code for q0 to position 1 here
 
     %% Get second position
+    position2 = IKposition(S,M,targetResetY,targetBoxY,position1)
+    %% Trajectory code for position1 to position2 here
 
+    %% Get third position
+    position3 = IKposition(S,M,targetBoxY,targetResetX,position2)
+    %% Trajectory code for position2 to position3 here
+
+    %% Get fourth position
+    position4 = IKposition(S,M,targetResetX,targetBoxX,position3)
+    %% Trajectory code for position3 to position 4 here
 
 

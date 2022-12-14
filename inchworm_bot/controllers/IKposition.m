@@ -25,7 +25,7 @@ function q = IKposition(S,M,currentT,targetT,currentQ)
                     
         currentQ = currentQ + deltaQ';
         T = fkine(S,M,currentQ,'space');
-        currentPose = T(1:3,4)
+        currentPose = T(1:3,4);
 %         currentR = T(1:3,1:3)
 %         targetR
     end
