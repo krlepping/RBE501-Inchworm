@@ -10,6 +10,5 @@ function T = fkine(S,M,q,frame) % If frame = true, body, else space
         for i = 1:length(S(1,:))
             T = T * twist2ht(S(:,i),q(i));
         end
-        T = T * M;
-    end
+        T = T * M;    end
 end
