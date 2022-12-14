@@ -12,8 +12,10 @@ def main():
         Joints = [i*2*pi/100, 0, 0, 0, 0]
         J = [0,0,0,0,0]
         T = man.InchwormFK(Joints)
-        man.InchwormIK(T,J)
-        man.InchwormIK()
+        q = man.InchwormIK(T,J) % (pi*2)
+        print(f"Given {Joints}")
+        print(f"Found {q}")
+
 
 
 if __name__ == "__main__":

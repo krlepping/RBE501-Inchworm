@@ -81,7 +81,7 @@ class Manipulator:
         :param Joints: The joints of the robot, in order
         """
 
-        newton_raphson(T,joints,0.0001,1000,self.S,self.M)
+        return newton_raphson(T,joints,0.0001,1000,self.S,self.M)
         # TODO: Make this work, and parse the return IK for proper info
         # return IK # Might need to change this return type to be a list instead of what it might be - maybe a string, unsure
 
@@ -93,11 +93,15 @@ def newton_raphson(targetT,initialJointAngles,epsilon,max_iter,S,M):
     targetPose = targetT[0:3,3]
     lamb = 0.5
     iteration = 0
-    while np.linalg.norm(targetT - currentT) > epsilon or iteration <= max_iter:
-        # J_a = jacoba(S,M,currentQ) # Need to put it into column form, is currently in row form
-        J = jacob0(S,currentQ) # Need to put it into column form, is currently in row form
-        # deltaQ = J.conj().T @ np.linalg.pinv(J @ J.conj().T + lamb**2 * np.eye(3) @ (targetPose - currentPose))
-        deltaQ = J.conj().T @ (targetPose - currentPose)
+    while np.linalg.norm(targetT - currentT) > epsilon and iteration <= max_iter:
+        J_a = jacoba(S,M,currentQ) # Need to put it into column form, is currently in row form
+        # J = jacob0(S,currentQ) # Need to put it into column form, is currently in row form
+        error = (targetPose - currentPose)
+        # poseError = lamb**2 * np.eye(3) @ error
+        # JaJaInv = J_a @ J_a.conj().T
+        # deltaQ = J_a @ np.linalg.pinv(JaJaInv + poseError)
+        pinv = np.linalg.pinv(J_a)
+        deltaQ = (pinv @ error)
         currentQ = currentQ + deltaQ.conj().T
         currentT = RodriguesFormula(S,M,currentQ)
         currentPose = currentT[0:3, 3]
