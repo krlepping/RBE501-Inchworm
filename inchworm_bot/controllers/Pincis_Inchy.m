@@ -10,7 +10,6 @@ function Pincis_Inchy()
         0 0 0 1];
     q0 = [0 0 0 0 0];
     startPose = fkine(S,M,q0,"space");
-    q = [2*pi/100 0 0 0 0];
     
     targetResetX = [1 0 0 150; 
         0 1 0 0; 
@@ -20,9 +19,7 @@ function Pincis_Inchy()
     targetBoxY = [0 -1 0 0; 0 0 -1 150; 1 0 0 50.8; 0 0 0 1];
     targetResetY = [1 0 0 0; 0 1 0 150; 0 0 1 180; 0 0 0 1];
     
-    position1 = IK(S,M,startPose,targetResetX,q0);
-
-    
+    position1 = IKposition(S,M,startPose,targetResetX,q0);
 
 
-    
+
