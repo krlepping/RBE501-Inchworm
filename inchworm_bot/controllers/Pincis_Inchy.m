@@ -19,7 +19,7 @@ function Pincis_Inchy()
                     0 0 1 180; 
                     0 0 0 1];
     targetBoxY = [0 0 -1 0; 
-                  0 1 0 150; 
+                  0 1 0 300; 
                   1 0 0 50.8; 
                   0 0 0 1];
     targetBoxX = [0 -1 0 150; 
@@ -28,7 +28,12 @@ function Pincis_Inchy()
                   0 0 0 1];
     targetResetY = [1 0 0 0; 0 1 0 150; 0 0 1 180; 0 0 0 1];
     
-    position1 = IKposition(S,M,startPose,targetBoxY,q0)
+    %% Get first position (go to a point that won't hit any boxes
+    position1 = IKposition(S,M,startPose,targetResetY,q0)
+
+    %% Trajectory code for q0 to position 1 here
+
+    %% Get second position
 
 
 

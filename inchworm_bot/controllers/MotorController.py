@@ -1,3 +1,5 @@
+import numpy as np
+
 from Manipulator import Manipulator
 from WebotsServoController import WebotsServoController
 from controller import Robot, Motor
@@ -48,6 +50,16 @@ class MotorController:
         joint_angles = self.manipulator.InchwormIK(x, y, z, self.Joints)
         print(f"{joint_angles}")
         return joint_angles
+
+    def getJoints(self):
+        a = self.joint_a.getTargetPosition()
+        b = self.joint_b.getTargetPosition()
+        c = self.joint_c.getTargetPosition()
+        d = self.joint_d.getTargetPosition()
+        e = self.joint_e.getTargetPosition()
+        # print(f"Joint 1 {a}, Joint 2 {b}, Joint 3 {c}, Joint 4 {d}, Joint 5 {e}")
+        return np.array([a, b, c, d, e])
+
         
 
 
