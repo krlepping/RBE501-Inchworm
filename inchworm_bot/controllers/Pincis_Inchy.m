@@ -1,8 +1,13 @@
 function Pincis_Inchy()
-    l1 = 109.03;
-    s = [0 0 1; 1 0 0; 1 0 0; 1 0 0; 0 0 1];
-    p = [];
-    S = [0 0 1 0 0 0;
+    % Considering our robot is a RRPRR
+    S = [0 0 1 0 0 0; % Done Ninja way and cross product way
+        1 0 0 0 109.03 0;
+        0 0 0 0 0 0;
+        1 0 0 0 109.03 -169.9879;
+        0 0 1 0 0 -169.9879]';
+    
+    % Considering our robot is an RRRRR
+    S = [0 0 1 0 0 0; % Done Ninja way and cross product way
         1 0 0 0 109.03 0;
         1 0 0 0 248.4913 -84.9940;
         1 0 0 0 109.03 -169.9879;
