@@ -7,7 +7,7 @@ function q = IKposition(S,M,currentT,targetT,currentQ)
     k = 0.1;
     
 %     while norm(targetPose - currentPose) + norm(targetR - currentR) > 1e-3
-    while norm(targetPose - currentPose) > 1e-3
+    while norm(targetPose - currentPose) > 1e-5
 %         J_a = jacob0(S,currentQ);
         J_a = jacoba(S,M,currentQ);
         
@@ -20,6 +20,10 @@ function q = IKposition(S,M,currentT,targetT,currentQ)
 %         J = jacob0(S,currentQ);
 %         deltaQ_Rotation = J_a' * pinv(J_a * J_a') * phi;
 %         deltaQ = J_a' * pinv(J_a*J_a' + lambda^2 * eye(3)) * poseError + deltaQ_Rotation;
+
+%         generalized coordinates results in rotationo matrix using basic
+%         coordinate and xyz euler : 
+
         deltaQ = J_a' * pinv(J_a*J_a' + lambda^2 * eye(3)) * (targetPose - currentPose);
 %         deltaQ = J_a\(targetPose - currentPose)
                     

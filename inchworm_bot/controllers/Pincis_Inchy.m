@@ -28,20 +28,20 @@ function Pincis_Inchy()
                   0 0 0 1];
     targetResetY = [1 0 0 0; 0 1 0 150; 0 0 1 180; 0 0 0 1];
     
-    %% Get first position (go to a point that won't hit any boxes
+    %% Get first Y reset (go to a point that won't hit any boxes
     position1 = IKposition(S,M,startPose,targetResetY,q0)
 
     %% Trajectory code for q0 to position 1 here
 
-    %% Get second position
+    %% Get Y target
     position2 = IKposition(S,M,targetResetY,targetBoxY,position1)
     %% Trajectory code for position1 to position2 here
 
-    %% Get third position
+    %% Get X reset
     position3 = IKposition(S,M,targetBoxY,targetResetX,position2)
     %% Trajectory code for position2 to position3 here
 
-    %% Get fourth position
+    %% Get X target
     position4 = IKposition(S,M,targetResetX,targetBoxX,position3)
     %% Trajectory code for position3 to position 4 here
 
