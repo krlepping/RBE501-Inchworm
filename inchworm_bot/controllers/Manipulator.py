@@ -38,41 +38,6 @@ class Manipulator:
 
         return RodriguesFormula(self.S,self.M,q)
 
-    def InchwormIK(self,x,y,z,alpha,beta,gamma):
-        """
-        xyz coordinates we want to go
-        :param x:
-        :param y:
-        :param z:
-
-        Initial position of the arm (current Q)
-        :param Joints: The joints of the robot, in order
-
-        xyz Euler coordinates of final position we want
-        :param alpha:
-        :param beta:
-        :param gamma:
-        :return:
-        """
-        # IK = self.eng.IK_Inchworm(x,y,z,a,b,c,d,e,alpha,beta,gamma)
-        # TODO: Make this work
-        # return IK # Might need to change this return type to be a list instead of what it might be - maybe a string, unsure
-
-    def InchwormIK(self,x,y,z):
-        """
-        Go to point, final orientation doesn't matter
-        xyz coordinates we want to go
-        :param x:
-        :param y:
-        :param z:
-
-        Initial position of the arm (current Q)
-        :param Joints: The joints of the robot, in order
-        """
-        # IK = self.eng.IK_InchwormNoOrientation(x,y,z,a,b,c,d,e)
-        # TODO: Make this work, and parse the return IK for proper info
-        # return IK # Might need to change this return type to be a list instead of what it might be - maybe a string, unsure
-
     def InchwormIK(self,T,joints):
         """
         Go to point, final orientation doesn't matter
