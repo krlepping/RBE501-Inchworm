@@ -24,9 +24,8 @@ function Pincis_Inchy()
     targetR = currPose(1:3,1:3);
     
     currentPose = startPose(1:3,4);
-    currrentR = startPose(1:3,1:3);
     
-    while norm(targetPose - currentPose) + norm(targetR - currentR) > 1e-3
+    while norm(targetPose - currentPose) > 1e-3
         J_a = jacoba(S,M,currentQ);
         
         % Use the Levenberg-Marquadt algorithm (Damped Least Squares)
