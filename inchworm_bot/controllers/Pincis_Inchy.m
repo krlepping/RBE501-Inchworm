@@ -22,9 +22,12 @@ function Pincis_Inchy()
     
 
     targetR = currPose(1:3,1:3);
+    targetPose = currPose(1:3,4);
     
     currentPose = startPose(1:3,4);
-    currrentR = startPose(1:3,1:3);
+    currentR = startPose(1:3,1:3);
+
+    currentQ = [0 0 0 0 0];
     
     while norm(targetPose - currentPose) + norm(targetR - currentR) > 1e-3
         J_a = jacoba(S,M,currentQ);
