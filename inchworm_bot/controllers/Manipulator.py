@@ -14,17 +14,20 @@ class Manipulator:
         self.footHeight1 = 38.40
         self.AnkleHeight1 = 109.03
         self.AnkleHeight2 = 109.03 # Real value seems to be different, oop
-        self.legLength1 = 163.71
+        self.legLength1 = 163.32
         self.defaultAngle = 58.64 * math.pi / 180
 
 
-        self.M = np.array([[1,0,0,self.legLength1*math.cos(self.defaultAngle)*2],[0,-1,0,0],[0,0,-1,0],[0,0,0,1]])
+        self.M = np.array([[1,0,0,self.legLength1*math.cos(self.defaultAngle)*2],
+                           [0,1,0,0],
+                           [0,0,1,0],
+                           [0,0,0,1]])
         self.S = np.array([[0, 0, 1, 0, 0, 0],
-                           [0, 1, 0, self.AnkleHeight1, 0, 0],
-                           [0, 1, 0, self.AnkleHeight1 + self.legLength1 * math.sin(self.defaultAngle),
-                            -self.legLength1 * math.sin(self.defaultAngle), 0],
-                           [0, 1, 0, self.AnkleHeight2, -self.legLength1 * math.sin(self.defaultAngle) * 2, 0],
-                           [0, 1, 0, 0, -self.legLength1 * math.sin(self.defaultAngle) * 2, 0]])
+                           [0, 1, 0, -self.AnkleHeight1, 0, 0],
+                           [0, 1, 0, -self.AnkleHeight1 - self.legLength1 * math.sin(self.defaultAngle),
+                            0, self.legLength1 * math.sin(self.defaultAngle)],
+                           [0, 1, 0, -self.AnkleHeight2, 0, self.legLength1 * math.sin(self.defaultAngle) * 2],
+                           [0, 0, 1, 0, 0, self.legLength1 * math.sin(self.defaultAngle) * 2]])
 
     def InchwormFK(self, q):
         """
@@ -154,8 +157,9 @@ def twist2ht(S,angle):
     part2 = (1 - math.cos(angle)) * skew(S[0:3])
     part3 = (angle - math.sin(angle)) * (skew(S[0:3]) @ skew(S[0:3]))
     shite = (np.add(np.add(part1, part2), part3) @ S[3:6])
+    top = np.hstack((R,shite.reshape(-1,1)))
     bottom = np.array([0,0,0,1])
-    return np.vstack((np.hstack((R,shite.reshape(-1,1))),bottom))
+    return np.vstack((top,bottom))
 
 def skew(S):
     if (isinstance(S, np.ndarray) and len(S.shape) >= 2):

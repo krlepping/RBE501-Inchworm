@@ -1,4 +1,6 @@
 # from MotorController import MotorController
+import numpy as np
+
 from Manipulator import Manipulator
 from math import pi
 
@@ -8,13 +10,14 @@ def main():
     print("Starting Inchworm Running")
     # motorController = MotorController()
     man = Manipulator()
-    for i in range(1,100):
-        Joints = [i*2*pi/100, 0, 0, 0, 0]
-        J = [0,0,0,0,0]
-        T = man.InchwormFK(Joints)
-        q = man.InchwormIK(T,J) % (pi*2)
-        print(f"Given {Joints}")
-        print(f"Found {q}")
+    Joints = [0, -31.36*pi/180, 0, 0, 0]
+    J = [0,0,0,0,0]
+    T = man.InchwormFK(Joints)
+    q = man.InchwormIK(T,J)
+    np.set_printoptions(precision=3,suppress=True)
+    print(f"In position \n{T}")
+    print(f"Given {Joints}")
+    print(f"Found {q}")
 
 
 

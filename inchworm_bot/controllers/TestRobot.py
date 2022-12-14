@@ -16,9 +16,17 @@ def main():
         Joints = [i * 2 * pi / 100, 0, 0, 0, 0]
         J = [0, 0, 0, 0, 0]
         T = man.InchwormFK(Joints)
-        q = man.InchwormIK(T, J)
-        motorController.move(q)
+        # q = man.InchwormIK(T, J)
+        motorController.move(Joints)
         print(f"Given {Joints}")
-        print(f"Found {q}")
+        print(f"Found {Joints}")
         i+=1
         print(i)
+
+        # Joints = [0, 0, pi, 0, 0]
+        # J = [0, 0, 0, 0, 0]
+        # T = man.InchwormFK(Joints)
+        # q = man.InchwormIK(T, J)
+        # print(f"In position {T}")
+        # print(f"Given {Joints}")
+        # print(f"Found {q}")
