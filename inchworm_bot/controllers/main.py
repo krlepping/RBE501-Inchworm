@@ -1,15 +1,19 @@
-from MotorController import MotorController
+# from MotorController import MotorController
 from Manipulator import Manipulator
+from math import pi
 
 Time_Step = 64
 
 def main():
     print("Starting Inchworm Running")
-    motorController = MotorController()
-    # man = Manipulator()
-    # Joints = [0,0,0,0,0]
-    # man.InchwormFKNoWebots(Joints)
-    # motorController.whereAt()
+    # motorController = MotorController()
+    man = Manipulator()
+    for i in range(1,100):
+        Joints = [i*2*pi/100, 0, 0, 0, 0]
+        J = [0,0,0,0,0]
+        T = man.InchwormFK(Joints)
+        man.InchwormIK(T,J)
+        man.InchwormIK()
 
 
 if __name__ == "__main__":

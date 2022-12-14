@@ -12,7 +12,8 @@ def main():
     # motorController.whereAt()
     i = 0
     while motorController.robot.step(Time_Step) != -1:
-        motorController.move(2*pi/100*i)
+        motorController.move(pi/100*i)
         motorController.whereAt()
+
         i+=1
         print(i)

@@ -32,24 +32,10 @@ class Manipulator:
         :param Joints: The joints of the robot, in order
         :return:
         """
-        RodriguesFormula(self.S,self.M,q)
 
-    def InchwormFKNoWebots(self, Joints):
-        """
-        Takes in all 5 joint angles and returns the foot position, Joints is a [] of Servos currently
-        :param Joints: The joints of the robot, in order
-        :return:
-        """
-        a = Joints[0]
-        b = Joints[1]
-        c = Joints[2]
-        d = Joints[3]
-        e = Joints[4]
-        print(f"Joint 1 {a}, Joint 2 {b}, Joint 3 {c}, Joint 4 {d}, Joint 5 {e}")
-        # T = self.eng.FK_Inchworm(0.0,0.0,0.0,0.0,0.0)
-        RodriguesFormula(self.S,self.M,Joints)
+        return RodriguesFormula(self.S,self.M,q)
 
-    def InchwormIK(self,x,y,z,Joints,alpha,beta,gamma):
+    def InchwormIK(self,x,y,z,alpha,beta,gamma):
         """
         xyz coordinates we want to go
         :param x:
@@ -65,16 +51,11 @@ class Manipulator:
         :param gamma:
         :return:
         """
-        a = Joints[0].getPosition()
-        b = Joints[1].getPosition()
-        c = Joints[2].getPosition()
-        d = Joints[3].getPosition()
-        e = Joints[4].getPosition()
         # IK = self.eng.IK_Inchworm(x,y,z,a,b,c,d,e,alpha,beta,gamma)
         # TODO: Make this work
         # return IK # Might need to change this return type to be a list instead of what it might be - maybe a string, unsure
 
-    def InchwormIK(self,x,y,z,Joints):
+    def InchwormIK(self,x,y,z):
         """
         Go to point, final orientation doesn't matter
         xyz coordinates we want to go
@@ -85,12 +66,22 @@ class Manipulator:
         Initial position of the arm (current Q)
         :param Joints: The joints of the robot, in order
         """
-        a = Joints[0].getPosition()
-        b = Joints[1].getPosition()
-        c = Joints[2].getPosition()
-        d = Joints[3].getPosition()
-        e = Joints[4].getPosition()
         # IK = self.eng.IK_InchwormNoOrientation(x,y,z,a,b,c,d,e)
+        # TODO: Make this work, and parse the return IK for proper info
+        # return IK # Might need to change this return type to be a list instead of what it might be - maybe a string, unsure
+
+    def InchwormIK(self,T,joints):
+        """
+        Go to point, final orientation doesn't matter
+        xyz coordinates we want to go
+        :param T: where and how to face when acheiving wanted position
+        :param joints: Initial joint angles
+
+        Initial position of the arm (current Q)
+        :param Joints: The joints of the robot, in order
+        """
+
+        newton_raphson(T,joints,0.0001,1000,self.S,self.M)
         # TODO: Make this work, and parse the return IK for proper info
         # return IK # Might need to change this return type to be a list instead of what it might be - maybe a string, unsure
 
@@ -98,34 +89,66 @@ class Manipulator:
 def newton_raphson(targetT,initialJointAngles,epsilon,max_iter,S,M):
     currentQ = initialJointAngles
     currentT = RodriguesFormula(S,M,initialJointAngles)
-    while np.linalg.norm(targetT - currentT) > epsilon:
-        return
+    currentPose = currentT[0:3,3]
+    targetPose = targetT[0:3,3]
+    lamb = 0.5
+    iteration = 0
+    while np.linalg.norm(targetT - currentT) > epsilon or iteration <= max_iter:
+        # J_a = jacoba(S,M,currentQ) # Need to put it into column form, is currently in row form
+        J = jacob0(S,currentQ) # Need to put it into column form, is currently in row form
+        # deltaQ = J.conj().T @ np.linalg.pinv(J @ J.conj().T + lamb**2 * np.eye(3) @ (targetPose - currentPose))
+        deltaQ = J.conj().T @ (targetPose - currentPose)
+        currentQ = currentQ + deltaQ.conj().T
+        currentT = RodriguesFormula(S,M,currentQ)
+        currentPose = currentT[0:3, 3]
+        iteration+=1
+    return currentQ
+
 
 
 
 def RodriguesFormula(S,M,jointAngles):
+    T = np.array([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
     for i in range(0,len(jointAngles)-1):
-        T = twist2ht(S[i],jointAngles[i])
+        T = T @ twist2ht(S[i],jointAngles[i])
     T = T@M
-    print(T)
     return T
 
 def jacoba(S,M,q):
-    J_space = jacob0(S,q)
+    J_space = jacob0(S,q).conj().T
     Jws = J_space[0:3,:]
-    Jvs = J_space[0:3, :]
+    Jvs = J_space[3:6,:]
     T = RodriguesFormula(S,M,q)
     p = T[0:3,3]
+    ret = -skew(p) @ Jws + Jvs
+    return ret
 
 def jacob0(S,q):
-    return 0
+    T = np.array([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
+    for i in range(0,len(q)):
+        temp = twist2ht(S[i],q[i])
+        T = T @ temp
+        if i != 0:
+            adj = adjoint(S[i],T)
+            J = np.vstack((J,adj))
+        else:
+            J = [S[i]]
+    return J
 
+def adjoint(Va,T):
+    R = T[0:3,0:3]
+    P = T[3,0:3]
+    right = np.zeros((3,3))
+    dom = np.hstack((R,right))
+    sub = np.hstack((skew(P)@R,R))
+    Adj = np.vstack((dom,sub))
+    return Adj @ Va
 
 def twist2ht(S,angle):
     R = axisAngle2Rot(S[0:3],angle)
     part1 = np.eye(3) * angle
-    part2 = (1 - math.cos(angle)) * skew(S[0:3]).conj().T
-    part3 = (angle - math.sin(angle)) * (skew(S[0:3]) @ skew(S[0:3])).conj().T
+    part2 = (1 - math.cos(angle)) * skew(S[0:3])
+    part3 = (angle - math.sin(angle)) * (skew(S[0:3]) @ skew(S[0:3]))
     shite = (np.add(np.add(part1, part2), part3) @ S[3:6])
     bottom = np.array([0,0,0,1])
     return np.vstack((np.hstack((R,shite.reshape(-1,1))),bottom))
