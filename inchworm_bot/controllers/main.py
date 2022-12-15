@@ -9,12 +9,16 @@ Time_Step = 64
 def main():
     print("Starting Inchworm Running")
     # motorController = MotorController()
+    np.set_printoptions(precision=3,suppress=True)
     man = Manipulator()
-    Joints = [0, -31.36*pi/180, 0, 0, 0]
+    Joints = [0,0.54733525342,0.47612581994,0.54733525342,0]
     J = [0,0,0,0,0]
+
+    print(f"Test {man.JacobA(Joints)}")
+
     T = man.InchwormFK(Joints)
     q = man.InchwormIK(T,J)
-    np.set_printoptions(precision=3,suppress=True)
+
     print(f"In position \n{T}")
     print(f"Given {Joints}")
     print(f"Found {q}")

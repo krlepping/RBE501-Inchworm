@@ -24,8 +24,11 @@ function q = IKposition(S,M,currentT,targetT,currentQ)
 
 %         generalized coordinates results in rotationo matrix using basic
 %         coordinate and xyz euler : 
-
-        deltaQ = J_a' * pinv(J_a*J_a' + lambda^2 * eye(3)) * (targetPose - currentPose);
+        JaJa = J_a*J_a';
+        JT = J_a';
+        damping = lambda^2 * eye(3);
+        error = (targetPose - currentPose);
+        deltaQ = JT * pinv(JaJa + damping) * (targetPose - currentPose)
 
         % Numerical Inverse?
 %         z = [1 1 1 1 1]';
