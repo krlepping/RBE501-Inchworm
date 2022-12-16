@@ -21,7 +21,10 @@ TARGET = {
     1: np.array([[0,0,-1,0],[0,1,0,150],[1,0,0,180],[0,0,0,1]]),
     2: np.array([[0,0,-1,0],[0,1,0,300],[1,0,0,50.8],[0,0,0,1]]),
     3: np.array([[1,0,0,300],[0,1,0,0],[0,0,1,180],[0,0,0,1]]),
-    4: np.array([[0, -1, 0, 300], [0, 0, -1, 0], [1, 0, 0, 50.8], [0, 0, 0, 1]])
+    4: np.array([[0, -1, 0, 300], [0, 0, -1, 0], [1, 0, 0, 50.8], [0, 0, 0, 1]]),
+    5: np.array([[0, -1, 0, 42.0], [0, 0, -1, 69], [1, 0, 0, 258], [0, 0, 0, 1]]),
+    6: np.array([[1, 0, 0, 160], [0, 1, 0, 160], [0, 0, 1, 200], [0, 0, 0, 1]])
+
 }
 
 def main():
@@ -50,6 +53,8 @@ def main():
             prevQ = motorController.getJoints()
             targetT = TARGET.get(i, np.array([[1, 0, 0, 0], [0, 1, 0, 169.9879], [0, 0, 1, 0], [0, 0, 0, 1]]))
             targetQ = man.InchwormIK(targetT,prevQ)
+            print(f"Target : {targetQ}")
+            print(f"Currently at : {prevQ}")
             differenceQ = targetQ - prevQ
             print(differenceQ)
             if isinstance(differenceQ, np.ndarray) and len(differenceQ.shape) >= 2:

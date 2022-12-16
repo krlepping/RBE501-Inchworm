@@ -47,7 +47,9 @@ class Manipulator:
         Initial position of the arm (current Q)
         :param Joints: The joints of the robot, in order
         """
-
+        for i in range(0,len(joints)):
+            if joints[i] != 0:
+                joints[i] = joints[i]/abs(joints[i]) * (abs(joints[i]) % (2*math.pi))
         return newton_raphson(T,joints,0.01,1000,self.S,self.M)
         # TODO: Make this work, and parse the return IK for proper info
         # return IK # Might need to change this return type to be a list instead of what it might be - maybe a string, unsure
