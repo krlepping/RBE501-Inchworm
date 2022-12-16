@@ -7,7 +7,7 @@ function Pincis_Inchy()
 %         0 0 1 0 0 -169.9879]';
     
     % Considering our robot is an RRRRR
-    S = [0 0 1 0 0 0; % Done Ninja way and cross product way
+    S = [0 0 1 0 0 0;
         1 0 0 0 109.03 0;
         1 0 0 0 248.4913 -84.9940;
         1 0 0 0 109.03 -169.9879;
